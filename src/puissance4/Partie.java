@@ -6,6 +6,7 @@
 package puissance4;
 
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  *
@@ -39,48 +40,80 @@ public class Partie {
        ListeJoueurs[1].affecterCouleur(couleur2);
        ListeJoueurs[1].couleur=couleur2;
        
+       System.out.println(ListeJoueurs[0].nom + "est de couleur" + couleur1);
+       System.out.println(ListeJoueurs[1].nom + "est de couleur" + couleur2);
     }
     
     public void initialiserPartie() {
-        GrilleJeu.viderGrille(); /* On commence par vider la grille*/
+        // On commence par initialiser la grille
+        GrilleJeu.viderGrille(); 
+        
+        //On initialise maintenant la partie :
+        
+        //Création des joueurs         
+        System.out.println("Entrez les noms des joueurs : ");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Joueur 1 : ");
+        Joueur joueur1 = new Joueur(sc.nextLine());
+        System.out.println("Joueur 2 : ");
+        Joueur joueur2 = new Joueur(sc.nextLine());
+        ListeJoueurs[0]=joueur1;
+        ListeJoueurs[1]=joueur2;
+        
+        //Attribution d'une couleur
+        attribuerCouleursAuxJoueurs();
+        
+        //Création des jetons
+        joueur1.ajouterJeton(new Jeton(joueur1.couleur));
+        joueur2.ajouterJeton(new Jeton(joueur2.couleur));
+        
+        //Choix aléatoire de l'ordre de jeu
+        Random rand0 = new Random();
+        int nbAleatoire0 = rand0.nextInt(2);
+        if (nbAleatoire0==0) {
+            joueurCourant=ListeJoueurs[0];
+        }
+        else {
+            joueurCourant=ListeJoueurs[1];
+        }
+        
         /* 2 désintégrateurs sont placés au même endroit que des trous noirs. On crée
         donc une boucle se répétant 2 fois qui permet de générer 2 nombres aléatoires correspondant
-        à la ligne et colonne de la grille sur lesquels on place un désintégrateur + un trou noir
-        */
+        à la ligne et colonne de la grille sur lesquels on place un désintégrateur + un trou noir */
         for (int i = 0; i<2; i++) {
             int nbAleatoire1, nbAleatoire2;
-            Random rand = new Random();
-            nbAleatoire1 = rand.nextInt(6);
-            nbAleatoire2 = rand.nextInt(7);
+            Random rand1 = new Random();
+            nbAleatoire1 = rand1.nextInt(6);
+            nbAleatoire2 = rand1.nextInt(7);
             GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2); 
             GrilleJeu.placerDesintegrateur(nbAleatoire1,nbAleatoire2); 
         }
-        /*On répète le même procédé pour les 3 trous noirs restants puis pour les désintégrateurs*/
+        //On répète le même procédé pour les 3 trous noirs restants 
         for (int i = 0; i<3; i++) {
             int nbAleatoire1, nbAleatoire2;
-            Random rand = new Random();
-            nbAleatoire1 = rand.nextInt(6);
-            nbAleatoire2 = rand.nextInt(7);
+            Random rand2 = new Random();
+            nbAleatoire1 = rand2.nextInt(6);
+            nbAleatoire2 = rand2.nextInt(7);
             GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2);
         }
         
+        //puis pour les désintégrateurs
         for (int i = 0; i<3; i++) {
             int nbAleatoire1, nbAleatoire2;
-            Random rand = new Random();
-            nbAleatoire1 = rand.nextInt(6);
-            nbAleatoire2 = rand.nextInt(7);
+            Random rand3 = new Random();
+            nbAleatoire1 = rand3.nextInt(6);
+            nbAleatoire2 = rand3.nextInt(7);
             GrilleJeu.placerDesintegrateur(nbAleatoire1,nbAleatoire2); 
         }
         
-        Jeton jeton1;
-        jeton1.Jeton(couleur1);
+        //On affiche la grille initiale
+        GrilleJeu.afficherGrilleSurConsole();
         
-        ListeJoueurs[0].ajouterJeton(jeton1);        
     }
     
     public void debuterPartie() {
-        attribuerCouleursAuxJoueurs();
         initialiserPartie();
+        //Tant qu'il n'y a aucun gagnant, boucle de jeu puis affiche grille à l'écran
     }
     
     

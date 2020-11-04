@@ -12,7 +12,7 @@ package puissance4;
 public class Grille {
     Cellule [][]Cellules = new Cellule [6][7];
     
-    public boolean colonneRemplie(int i) {
+    public boolean colonneRemplie(int i) { //avec i l'indice de la colonne
         if (Cellules[5][i]!=null){
             return true;
         }
@@ -21,24 +21,34 @@ public class Grille {
        }      
     }
     
-    public boolean ajouterJetonDansColonne(Jeton unJeton, int i) { /*avec i, l'indice de la colonne*/
+    public boolean ajouterJetonDansColonne(Joueur unJoueur, int i) { //avec i, l'indice de la colonne
+        int j=0; //avec j l'indice de la ligne
         if (colonneRemplie(i)==true) {
             return false;
         }
         else {
-            
-        }
-        for (int j=6; j<0; j--) {
-            if  (Cellules[j][i] == null) {
-                Cellules[j][i].jetonCourant = unJeton;
+            //On cherche la première cellule vide en partant du bas
+            while(Cellules[j][i]!=null) {
+                j++;
             }
-        }
-        if (Cellules[0][i]!=null){
-            return false;
-        }
-        else {
+            //On ajoute ensuite un jeton dans la case concernée et on enlève un jeton dans la liste du joueur           
+            Jeton unJeton = unJoueur.enleverJeton();
+            Cellules[j][i].jetonCourant=unJeton;
+        
+            //On vérifie s'il y a un trou noir
+            if (Cellules[j][i].presenceTrouNoir()==true) {
+                Cellules[j][i].activerTrouNoir();
+            }
+            
+            //On vérifie s'il y a un désintégrateur
+            if (Cellules[j][i].presenceDesintegrateur()==true) {
+                Cellules[j][i].recupererDesintegrateur();
+                unJoueur.obtenirDesintegrateurs();
+                      
+            }
             return true;
-        }
+        }            
+        
     }
     
     public boolean etreRemplie() {
@@ -67,13 +77,13 @@ public class Grille {
         for (int i=0; i<7; i++) {
             for (int j=0; j<8; j++) {
                 if (Cellules[i][j]==null) {
-                    Cellules2[i][j]= "-";
+                    Cellules2[i][j]= "X"; //On affiche un X si la case est vide
                 }
                 else if (Cellules[i][j].presenceTrouNoir()== true) {
-                    Cellules2[i][j]= "X";
+                    Cellules2[i][j]= "T";
                 }
                 else if (Cellules[i][j].presenceDesintegrateur()== true) {
-                    Cellules2[i][j]= "O";
+                    Cellules2[i][j]= "D";
                 }
                 else {
                     if (Cellules[i][j].lireCouleurDuJeton() == "Rouge") {
@@ -105,8 +115,81 @@ public class Grille {
     }
     
     public boolean etreGagnantePourJoueur (Joueur unJoueur) {
-        if (Cellules[i][j])
+        boolean res=false;
+        String CouleurDuJoueur=unJoueur.couleur;
+        
+        //Si 4 jetons sont alignés en ligne
+        for(int i=0; i<6; i++){
+            int nb_alignés=0;
+            for(int j=0; j<7; j++){
+                if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                    nb_alignés=nb_alignés+1;
+                }
+                else{
+                    nb_alignés=0;
+                }
+                if (nb_alignés==4){
+                    System.out.print(unJoueur + "a gagné la partie");
+                    res=true;                    
+                }
+            }
+        }
+        
+        //Si 4 jetons sont alignés en colonne
+        for(int j=0; j<7; j++){
+            int nb_alignés=0;
+            for(int i=0; i<6; i++){
+                if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                    nb_alignés=nb_alignés+1;
+                }
+                else{
+                    nb_alignés=0;
+                }
+                if (nb_alignés==4){
+                    System.out.print(unJoueur + "a gagné la partie");
+                    res=true;               
+                }
+            }
+        }
+        
+        //Si 4 jetons sont alignés en diagonales
+        for(int i=0;i<6;i++){
+            int nb_alignés=0;
+            for(int j=0;j<4;j++){
+                if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                    if (Cellules[i+1][j+1].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                        nb_alignés=nb_alignés+1;
+                    }
+                    else{
+                        nb_alignés=0;
+                    }
+                    if (nb_alignés==4){
+                        System.out.print(unJoueur + "a gagné la partie");
+                        res=true;                     
+                    }
+                    
+                }
+            } 
+            for(int j=3; j<7;j++){
+                if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                    if (Cellules[i+1][j-1].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                        nb_alignés=nb_alignés+1;
+                    }
+                    else{
+                        nb_alignés=0;
+                    }
+                    if (nb_alignés==4){
+                        System.out.print(unJoueur + "a gagné la partie");
+                        res=true;                      
+                    }
+                    
+                }
+            }
+        }
+        return res;
+        
     }
+    
     
     public void tasserGrille (int i) { /*avec i, la colonne*/
         for (int j=6; j<0; j--) {
