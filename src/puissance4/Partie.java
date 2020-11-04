@@ -35,7 +35,9 @@ public class Partie {
         }
        
        ListeJoueurs[0].affecterCouleur(couleur1);
+       ListeJoueurs[0].couleur=couleur1;
        ListeJoueurs[1].affecterCouleur(couleur2);
+       ListeJoueurs[1].couleur=couleur2;
        
     }
     

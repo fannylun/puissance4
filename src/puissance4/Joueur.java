@@ -19,6 +19,8 @@ public class Joueur {
     public Joueur(String unNom) {
         
         nom=unNom;
+        nombreDesintegrateurs=0;
+        nombreJetons=0;
     }
     
     public void affecterCouleur (String uneCouleur) {
@@ -30,7 +32,13 @@ public class Joueur {
         
         for (int i=0; i<21; i++) {
             ListeJetons[i]=unJeton;
+            nombreJetons++;
         }
+    }
+    
+    public Jeton enleverJeton () {
+        nombreJetons=nombreJetons-1;
+        return ListeJetons[nombreJetons];
     }
     
     public void obtenirDesintegrateurs() {

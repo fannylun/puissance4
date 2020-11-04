@@ -30,8 +30,11 @@ public class Cellule {
         }
     }
     
+    //permet de récupérer le jeton d'une cellule
     public Jeton recupererJeton() {
-        return jetonCourant;
+        Jeton jetonRecup = jetonCourant;
+        jetonCourant=null;
+        return jetonRecup;
     }
     
     public boolean supprimerJeton() {
@@ -65,25 +68,20 @@ public class Cellule {
     }
     
     public boolean presenceTrouNoir() {
-        if (trouNoir==true) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return trouNoir;
     }
     
     public boolean presenceDesintegrateur() {
-        if (desintegrateur==true) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return desintegrateur;      
     }
     
     public String lireCouleurDuJeton() {
-        return jetonCourant.lireCouleur();
+        if (jetonCourant==null) {
+            return "VIDE";
+        }
+        else {
+            return jetonCourant.lireCouleur();
+        }        
     }
     
     public boolean recupererDesintegrateur() {
@@ -100,6 +98,7 @@ public class Cellule {
         if(trouNoir==true) {
             jetonCourant=null;
             trouNoir=false;
+            System.out.print("Un trou noir a engloutit votre jeton");
             return true;
         }
         else {

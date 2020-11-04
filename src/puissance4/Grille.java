@@ -12,7 +12,22 @@ package puissance4;
 public class Grille {
     Cellule [][]Cellules = new Cellule [6][7];
     
+    public boolean colonneRemplie(int i) {
+        if (Cellules[5][i]!=null){
+            return true;
+        }
+        else {
+            return false;
+       }      
+    }
+    
     public boolean ajouterJetonDansColonne(Jeton unJeton, int i) { /*avec i, l'indice de la colonne*/
+        if (colonneRemplie(i)==true) {
+            return false;
+        }
+        else {
+            
+        }
         for (int j=6; j<0; j--) {
             if  (Cellules[j][i] == null) {
                 Cellules[j][i].jetonCourant = unJeton;
@@ -101,16 +116,7 @@ public class Grille {
             }
         }
     }
-    
-    public boolean colonneRemplie(int i) {
-        if (Cellules[0][i]!=null){
-            return true;
-        }
-        else {
-            return false;
-       }      
-    }
-    
+      
     public boolean placerTrouNoir (int i , int j){
         if (Cellules[i][j].presenceTrouNoir()==true){
             return false;
