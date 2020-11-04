@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class Partie {
     Joueur []ListeJoueurs = new Joueur [2];
-    Grille GrilleJeu;
+    Grille GrilleJeu = new Grille();
     Joueur joueurCourant; 
     
     /* On génère un nb aléatoire correspondant à une des 2 couleurs ce qui permet
@@ -40,8 +40,8 @@ public class Partie {
        ListeJoueurs[1].affecterCouleur(couleur2);
        ListeJoueurs[1].couleur=couleur2;
        
-       System.out.println(ListeJoueurs[0].nom + "est de couleur" + couleur1);
-       System.out.println(ListeJoueurs[1].nom + "est de couleur" + couleur2);
+       System.out.println(ListeJoueurs[0].nom + " est de couleur " + couleur1);
+       System.out.println(ListeJoueurs[1].nom + " est de couleur " + couleur2);
     }
     
     public void initialiserPartie() {
@@ -64,8 +64,11 @@ public class Partie {
         attribuerCouleursAuxJoueurs();
         
         //Création des jetons
-        joueur1.ajouterJeton(new Jeton(joueur1.couleur));
-        joueur2.ajouterJeton(new Jeton(joueur2.couleur));
+        for (int i=0; i<21; i++) {
+            joueur1.ajouterJeton(new Jeton(joueur1.couleur));
+            joueur2.ajouterJeton(new Jeton(joueur2.couleur)); 
+        }
+        
         
         //Choix aléatoire de l'ordre de jeu
         Random rand0 = new Random();
@@ -76,6 +79,7 @@ public class Partie {
         else {
             joueurCourant=ListeJoueurs[1];
         }
+        System.out.println("C'est à "+ joueurCourant.nom + " de jouer");
         
         /* 2 désintégrateurs sont placés au même endroit que des trous noirs. On crée
         donc une boucle se répétant 2 fois qui permet de générer 2 nombres aléatoires correspondant
@@ -111,8 +115,175 @@ public class Partie {
         
     }
     
+        
+    //Création du menu d'actions du joueur
+    public int menu() {
+        Scanner sc;       
+        int rep;
+        sc = new Scanner(System.in);
+        System.out.println("1 : Poser un jeton");
+        System.out.println("2 : Utiliser un désintégrateur");
+        System.out.println("3 : Récupérer un jeton");
+        rep=sc.nextInt();
+        //On vérifie que le choix est possible
+        while (rep>3 || rep<1) {
+            System.out.println("Erreur, choix non valide");
+            rep=sc.nextInt();
+        }
+        return rep;
+    }
+    
+    //Création des différentes actions :
+    
+    
+    public void poserJeton() {
+        Scanner sc;
+        sc = new Scanner(System.in);
+        System.out.println("Choisir une colonne : ");
+        int j = sc.nextInt()-1; //avec j l'indice de la colonne
+        //On vérifie que le choix est possible
+        while (j>7 || j<0) {
+            System.out.println("Erreur, choix non valide");
+            j = sc.nextInt()-1;
+        }
+        /* Tant que la colonne est pleine, on demande au joueur d'en choisir une autre
+        Dès que la colonne n'est pas remplie, le jeton sera ajouté automatiquement grâce
+        à la méthode ajouterJetonDansColonne*/
+        while (GrilleJeu.ajouterJetonDansColonne(joueurCourant, j)==false) {
+            System.out.println("La colonne est déjà pleine, veuillez en choisir une autre : ");
+            j = sc.nextInt()-1;
+        }
+        GrilleJeu.afficherGrilleSurConsole();
+    }
+    
+    public void activerDesintegrateur() {
+        //On vérifie si le joueur a bien un désintégrateur
+        if (joueurCourant.nombreDesintegrateurs==0) {
+            System.out.print("Erreur, vous n'avez pas de désintégrateur");
+        }
+        else {
+            //On demande quel jeton doit être désintégré et on vérifie que la case existe
+            Scanner sc;
+            sc = new Scanner(System.in);      
+            System.out.println("Veuillez indiquer le jeton à désintégrer : ");
+            System.out.println("Numéro de ligne : ");
+            int i = sc.nextInt()-1; //avec i l'indice de la ligne
+            while (i>5 || i<0) {
+                System.out.println("Erreur, choix non valide");
+                System.out.println("Numéro de ligne : ");
+                i = sc.nextInt()-1;
+            }
+            
+            System.out.println("Numéro de colonne : ");
+            int j = sc.nextInt()-1; //et j l'indice de la colonne
+            while (j>6 || j<0) {
+                System.out.println("Erreur, choix non valide");
+                System.out.println("Numéro de colonne : ");
+                j = sc.nextInt()-1;
+            }
+            //On vérifie que la case n'est pas vide et on supprime le jeton
+            while (GrilleJeu.supprimerJeton(i, j)==false) {
+                System.out.println("Erreur, case vide. Choisir une autre case : ");
+                System.out.println("Numéro de ligne : ");
+                i = sc.nextInt()-1;
+                while (i>5 || i<0) {
+                    System.out.println("Erreur, choix non valide");
+                    System.out.println("Numéro de ligne : ");
+                    i = sc.nextInt()-1;
+                }
+                System.out.println("Numéro de colonne : ");
+                j = sc.nextInt()-1;
+                while (j>6 || j<0) {
+                    System.out.println("Erreur, choix non valide");
+                    System.out.println("Numéro de colonne : ");
+                    j = sc.nextInt()-1;
+                }
+            }
+            //On tasse la grille après avoir supprimé le jeton
+            GrilleJeu.tasserGrille(j);
+            
+            //On enlève un désintégrateur au joueur
+            joueurCourant.utiliserDesintegrateur();
+        }
+        GrilleJeu.afficherGrilleSurConsole();
+    }
+    
+    public void reprendreJeton(){
+        //On demande quel jeton le joueur veut récupérer et on vérifie que la case existe
+        Scanner sc;
+        sc = new Scanner(System.in);      
+        System.out.println("Veuillez indiquer le jeton à récupérer : ");
+        System.out.println("Numéro de ligne : ");
+        int i = sc.nextInt()-1; //avec i l'indice de la ligne
+        while (i>5 || i<0) {
+            System.out.println("Erreur, choix non valide");
+            System.out.println("Numéro de ligne : ");
+            i = sc.nextInt()-1;
+        }
+        System.out.println("Numéro de colonne : ");
+        int j = sc.nextInt()-1; //et j l'indice de la colonne
+        while (j>6 || j<0) {
+            System.out.println("Erreur, choix non valide");
+            System.out.println("Numéro de colonne : ");
+            j = sc.nextInt()-1;
+        }
+        //On vérifie que le jeton appartient bien au joueur et que la case n'est pas vide
+        if ((GrilleJeu.Cellules[i][j].lireCouleurDuJeton().equals(joueurCourant.couleur)) && GrilleJeu.celluleOccupee(i,j)==true) {
+            joueurCourant.ajouterJeton(GrilleJeu.recupererJeton(i,j));
+            //On tasse la grille
+            GrilleJeu.tasserGrille(j);              
+        }  
+        GrilleJeu.afficherGrilleSurConsole();        
+    }
+    
+    //Changement de joueur
+    public Joueur changementJoueur(Joueur unJoueur) {
+        if (joueurCourant==ListeJoueurs[0]) {
+            return ListeJoueurs[1];
+        }
+        else {
+            return ListeJoueurs[0];
+        }
+    }
+                
+    public void choix() {
+        
+        System.out.println("Que voulez-vous faire ?");
+        int rep;
+        
+        /*Appel à la fonction menu puis à la méthode souhaitée en fonction du choix de
+        l'utilisateur*/
+        
+        do { 
+            rep = menu(); 
+            switch (rep) {
+                case 1: 
+                    poserJeton();
+                    changementJoueur(joueurCourant);
+                    break;
+                case 2:
+                    activerDesintegrateur();
+                    changementJoueur(joueurCourant);
+                    break;
+                case 3: 
+                    reprendreJeton();
+                    changementJoueur(joueurCourant);
+                    break;
+                
+            }
+        } while (rep<=3);
+        
+        System.out.println("C'est au tour de" + joueurCourant.nom +"de jouer");  
+        
+    }
+    
     public void debuterPartie() {
         initialiserPartie();
+        while (GrilleJeu.etreGagnantePourJoueur(joueurCourant)==false) {
+            menu();
+            choix();
+            
+        }
         //Tant qu'il n'y a aucun gagnant, boucle de jeu puis affiche grille à l'écran
     }
     

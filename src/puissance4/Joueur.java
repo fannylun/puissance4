@@ -30,10 +30,7 @@ public class Joueur {
     
     public void ajouterJeton (Jeton unJeton) {
         
-        for (int i=0; i<21; i++) {
-            ListeJetons[i]=unJeton;
-            nombreJetons++;
-        }
+        ListeJetons[nombreJetons++]=unJeton;
     }
     
     public Jeton enleverJeton () {
@@ -44,19 +41,20 @@ public class Joueur {
     public void obtenirDesintegrateurs() {
         
         nombreDesintegrateurs = nombreDesintegrateurs++;
+        System.out.print("Vous avez gagné un désintégrateur");
     }
     
     public boolean utiliserDesintegrateur() {
-        
+        boolean res;
         if (nombreDesintegrateurs==0) {
-            return false;
+            res= false;
         }
         else {
             nombreDesintegrateurs = nombreDesintegrateurs--;
-            return true;
-        }
-        
-        
+            res= true;
+        }        
+        System.out.print("Vous avez" + nombreDesintegrateurs + "désintégrateurs");
+        return res;
     }
     
 }

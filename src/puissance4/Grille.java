@@ -12,6 +12,14 @@ package puissance4;
 public class Grille {
     Cellule [][]Cellules = new Cellule [6][7];
     
+    Grille() {
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                Cellules[i][j] = new Cellule();
+            }
+        }
+    }
+    
     public boolean colonneRemplie(int i) { //avec i l'indice de la colonne
         if (Cellules[5][i]!=null){
             return true;
