@@ -11,6 +11,7 @@ package puissance4;
  * @author flunardi
  */
 public class Puissance4 {
+    
 
     /**
      * @param args the command line arguments

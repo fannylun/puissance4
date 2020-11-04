@@ -13,6 +13,7 @@ public class Jeton {
     
     String couleur;
     
+    
     public Jeton (String uneCouleur) {
         couleur=uneCouleur;
     }

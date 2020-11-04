@@ -33,6 +33,7 @@ public class Joueur {
         ListeJetons[nombreJetons++]=unJeton;
     }
     
+    
     public Jeton enleverJeton () {
         nombreJetons=nombreJetons-1;
         return ListeJetons[nombreJetons];

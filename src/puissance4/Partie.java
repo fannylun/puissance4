@@ -101,6 +101,7 @@ public class Partie {
             GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2);
         }
         
+        
         //puis pour les désintégrateurs
         for (int i = 0; i<3; i++) {
             int nbAleatoire1, nbAleatoire2;

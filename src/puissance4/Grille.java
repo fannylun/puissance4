@@ -208,6 +208,7 @@ public class Grille {
         }
     }
       
+    
     public boolean placerTrouNoir (int i , int j){
         if (Cellules[i][j].presenceTrouNoir()==true){
             return false;
