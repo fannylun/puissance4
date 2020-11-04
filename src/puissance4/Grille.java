@@ -84,7 +84,7 @@ public class Grille {
         String [][]Cellules2 = new String[6][7];
         for (int i=0; i<7; i++) {
             for (int j=0; j<8; j++) {
-                if (Cellules[i][j]==null) {
+                if (Cellules[i][j].jetonCourant==null) {
                     Cellules2[i][j]= "X"; //On affiche un X si la case est vide
                 }
                 else if (Cellules[i][j].presenceTrouNoir()== true) {
@@ -119,7 +119,13 @@ public class Grille {
     }
     
     public String lireCouleurDuJeton(int i, int j) {
-        return Cellules[i][j].jetonCourant.lireCouleur();
+        if (Cellules[i][j].jetonCourant==null) {
+            return "VIDE";                    
+        }
+        else {
+            return Cellules[i][j].jetonCourant.lireCouleur();
+        }
+        
     }
     
     public boolean etreGagnantePourJoueur (Joueur unJoueur) {
