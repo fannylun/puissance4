@@ -178,16 +178,21 @@ public class Grille {
             for(int j=0;j<4;j++){
                 if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
                     nb_alignés=1;
-                    if (Cellules[i+1][j+1].lireCouleurDuJeton().equals(CouleurDuJoueur)){
-                        nb_alignés=nb_alignés+1;
-                    }
-                    else{
-                        nb_alignés=0;
-                    }
-                    if (nb_alignés==4){
-                        System.out.print(unJoueur.nom + " a gagné la partie");
-                        res=true;                     
-                    }
+                    for(int u=i;u<5;u++){
+                        for(int v=j;v<6;v++){
+                            if (Cellules[u+1][v+1].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                                nb_alignés=nb_alignés+1;
+                            }
+                            else{
+                                nb_alignés=0;
+                            }
+                            if (nb_alignés==4){
+                                System.out.print(unJoueur.nom + " a gagné la partie");
+                                res=true;                     
+                            }                           
+                        
+                        }
+                    }                   
                     
                 }
             } 
@@ -214,7 +219,7 @@ public class Grille {
     
     
     public void tasserGrille (int i) { /*avec i, la colonne*/
-        for (int j=6; j<0; j--) {
+        for (int j=0; j<6; j++) {
             if (Cellules[j][i]==null) {
                 Cellules[j][i]=Cellules[j+1][i];
                 Cellules[j+1][i]=null;

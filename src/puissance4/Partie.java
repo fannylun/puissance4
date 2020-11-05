@@ -159,21 +159,26 @@ public class Partie {
     public void poserJeton() {
         Scanner sc;
         sc = new Scanner(System.in);
-        System.out.println("Choisir une colonne : ");
-        int j = sc.nextInt()-1; //avec j l'indice de la colonne
-        //On vérifie que le choix est possible
-        while (j>7 || j<0) {
-            System.out.println("Erreur, choix non valide");
-            j = sc.nextInt()-1;
+        if (joueurCourant.nombreJetons>0) {
+            System.out.println("Choisir une colonne : ");
+            int j = sc.nextInt()-1; //avec j l'indice de la colonne
+            //On vérifie que le choix est possible
+            while (j>7 || j<0) {
+                System.out.println("Erreur, choix non valide");
+                j = sc.nextInt()-1;
+            }
+            /* Tant que la colonne est pleine, on demande au joueur d'en choisir une autre
+            Dès que la colonne n'est pas remplie, le jeton sera ajouté automatiquement grâce
+            à la méthode ajouterJetonDansColonne*/
+            while (GrilleJeu.ajouterJetonDansColonne(joueurCourant, j)==false) {
+                System.out.println("La colonne est déjà pleine, veuillez en choisir une autre : ");
+                j = sc.nextInt()-1;
+            }        
+            GrilleJeu.afficherGrilleSurConsole();
         }
-        /* Tant que la colonne est pleine, on demande au joueur d'en choisir une autre
-        Dès que la colonne n'est pas remplie, le jeton sera ajouté automatiquement grâce
-        à la méthode ajouterJetonDansColonne*/
-        while (GrilleJeu.ajouterJetonDansColonne(joueurCourant, j)==false) {
-            System.out.println("La colonne est déjà pleine, veuillez en choisir une autre : ");
-            j = sc.nextInt()-1;
-        }        
-        GrilleJeu.afficherGrilleSurConsole();        
+        else {
+            System.out.println("Vous n'avez plus de jetons");
+        }
     }
     
     public boolean activerDesintegrateur() {
@@ -310,7 +315,7 @@ public class Partie {
             
             joueurCourant=changementJoueur(joueurCourant);
             System.out.println("C'est au tour de " + joueurCourant.nom +" de jouer"); 
-        } while (rep<=3 && GrilleJeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && GrilleJeu.etreGagnantePourJoueur(ListeJoueurs[0])==false);
+        } while (rep<=3 && GrilleJeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && GrilleJeu.etreGagnantePourJoueur(ListeJoueurs[1])==false);
         // BD : changement du test pour inclure les 2 gagnants  
         
     }

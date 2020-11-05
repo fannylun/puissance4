@@ -41,7 +41,7 @@ public class Joueur {
     
     public void obtenirDesintegrateurs() {
         
-        nombreDesintegrateurs = nombreDesintegrateurs++;
+        nombreDesintegrateurs++;
         System.out.println("Vous avez gagné un désintégrateur");
     }
     
@@ -54,7 +54,7 @@ public class Joueur {
             nombreDesintegrateurs = nombreDesintegrateurs--;
             res= true;
         }        
-        System.out.print("Vous avez" + nombreDesintegrateurs + "désintégrateurs");
+        System.out.print("Vous avez " + nombreDesintegrateurs + " désintégrateurs");
         return res;
     }
     
