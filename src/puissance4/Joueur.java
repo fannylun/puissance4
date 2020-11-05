@@ -42,7 +42,7 @@ public class Joueur {
     public void obtenirDesintegrateurs() {
         
         nombreDesintegrateurs = nombreDesintegrateurs++;
-        System.out.print("Vous avez gagné un désintégrateur");
+        System.out.println("Vous avez gagné un désintégrateur");
     }
     
     public boolean utiliserDesintegrateur() {

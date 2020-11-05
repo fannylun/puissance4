@@ -62,7 +62,7 @@ public class Grille {
     public boolean etreRemplie() {
         boolean res = false;
         for (int i=0; i<7; i++) {
-            if (Cellules[0][i]==null){
+            if (Cellules[0][i].jetonCourant==null){
                 res = false;
             }
             else {
@@ -102,17 +102,21 @@ public class Grille {
                     if (Cellules[i][j].lireCouleurDuJeton().equals("Jaune")) {
                         Cellules2[i][j]= "J ";
                     } 
-                }                        
-                
-                System.out.print(Cellules2[i][j]);
-               
+                }                   
+            }            
+        }
+        //On affiche ensuite la grille ligne par ligne en inversant les lignes
+        for (int i=0; i<6; i++) {
+            for (int j=0; j<7; j++) {
+                System.out.print(Cellules2[5-i][j]);
             }
             System.out.print("\n");
         }
+        
     }
     
     public boolean celluleOccupee(int i, int j) {
-        if (Cellules[i][j]!=null) {
+        if (Cellules[i][j].jetonCourant.couleur=="Rouge" || Cellules[i][j].jetonCourant.couleur=="Jaune") {
             return true;
         }
         else {
@@ -145,7 +149,7 @@ public class Grille {
                     nb_alignés=0;
                 }
                 if (nb_alignés==4){
-                    System.out.print(unJoueur + "a gagné la partie");
+                    System.out.print(unJoueur.nom + " a gagné la partie");
                     res=true;                    
                 }
             }
@@ -162,7 +166,7 @@ public class Grille {
                     nb_alignés=0;
                 }
                 if (nb_alignés==4){
-                    System.out.print(unJoueur + "a gagné la partie");
+                    System.out.print(unJoueur.nom + " a gagné la partie");
                     res=true;               
                 }
             }
@@ -173,6 +177,7 @@ public class Grille {
             int nb_alignés=0;
             for(int j=0;j<4;j++){
                 if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                    nb_alignés=1;
                     if (Cellules[i+1][j+1].lireCouleurDuJeton().equals(CouleurDuJoueur)){
                         nb_alignés=nb_alignés+1;
                     }
@@ -180,7 +185,7 @@ public class Grille {
                         nb_alignés=0;
                     }
                     if (nb_alignés==4){
-                        System.out.print(unJoueur + "a gagné la partie");
+                        System.out.print(unJoueur.nom + " a gagné la partie");
                         res=true;                     
                     }
                     
@@ -195,7 +200,7 @@ public class Grille {
                         nb_alignés=0;
                     }
                     if (nb_alignés==4){
-                        System.out.print(unJoueur + "a gagné la partie");
+                        System.out.print(unJoueur.nom + " a gagné la partie");
                         res=true;                      
                     }
                     

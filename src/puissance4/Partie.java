@@ -172,14 +172,16 @@ public class Partie {
         while (GrilleJeu.ajouterJetonDansColonne(joueurCourant, j)==false) {
             System.out.println("La colonne est déjà pleine, veuillez en choisir une autre : ");
             j = sc.nextInt()-1;
-        }
-        GrilleJeu.afficherGrilleSurConsole();
+        }        
+        GrilleJeu.afficherGrilleSurConsole();        
     }
     
-    public void activerDesintegrateur() {
+    public boolean activerDesintegrateur() {
         //On vérifie si le joueur a bien un désintégrateur
+        boolean res;
         if (joueurCourant.nombreDesintegrateurs==0) {
-            System.out.print("Erreur, vous n'avez pas de désintégrateur");
+            System.out.println("Erreur, vous n'avez pas de désintégrateur");
+            res = false;
         }
         else {
             //On demande quel jeton doit être désintégré et on vérifie que la case existe
@@ -224,11 +226,15 @@ public class Partie {
             
             //On enlève un désintégrateur au joueur
             joueurCourant.utiliserDesintegrateur();
+            res=true;
+            
         }
         GrilleJeu.afficherGrilleSurConsole();
+        return res;
     }
     
-    public void reprendreJeton(){
+    public boolean reprendreJeton(){
+        boolean res;
         //On demande quel jeton le joueur veut récupérer et on vérifie que la case existe
         Scanner sc;
         sc = new Scanner(System.in);      
@@ -251,14 +257,20 @@ public class Partie {
         if ((GrilleJeu.Cellules[i][j].lireCouleurDuJeton().equals(joueurCourant.couleur)) && GrilleJeu.celluleOccupee(i,j)==true) {
             joueurCourant.ajouterJeton(GrilleJeu.recupererJeton(i,j));
             //On tasse la grille
-            GrilleJeu.tasserGrille(j);              
+            GrilleJeu.tasserGrille(j);       
+            res=true;
         }  
-        GrilleJeu.afficherGrilleSurConsole();        
+        else {
+            System.out.println("Erreur, case vide");
+            res=false;
+        }
+        GrilleJeu.afficherGrilleSurConsole(); 
+        return res;
     }
     
     //Changement de joueur
     public Joueur changementJoueur(Joueur unJoueur) {
-        if (joueurCourant==ListeJoueurs[0]) {
+        if (ListeJoueurs[0]==joueurCourant) {
             return ListeJoueurs[1];
         }
         else {
@@ -278,31 +290,34 @@ public class Partie {
             rep = menu(); 
             switch (rep) {
                 case 1: 
-                    poserJeton();
-                    changementJoueur(joueurCourant);
+                    poserJeton();                    
                     break;
                 case 2:
-                    activerDesintegrateur();
-                    changementJoueur(joueurCourant);
+                    boolean res;
+                    res = activerDesintegrateur();
+                    if (res==false){
+                        joueurCourant=changementJoueur(joueurCourant);
+                    }
                     break;
                 case 3: 
-                    reprendreJeton();
-                    changementJoueur(joueurCourant);
-                    break;
-                
+                    boolean res1;
+                    res1 = reprendreJeton();
+                    if (res1==false){
+                        joueurCourant=changementJoueur(joueurCourant);
+                    }
+                    break;                
             }
-        } while (rep<=3);
-        
-        System.out.println("C'est au tour de" + joueurCourant.nom +"de jouer");  
+            
+            joueurCourant=changementJoueur(joueurCourant);
+            System.out.println("C'est au tour de " + joueurCourant.nom +" de jouer"); 
+        } while (rep<=3 && GrilleJeu.etreGagnantePourJoueur(joueurCourant)==false);
+         
         
     }
     
     public void debuterPartie() {
         initialiserPartie();
-        while (GrilleJeu.etreGagnantePourJoueur(joueurCourant)==false) {
-            choix();            
-        }
-        //Tant qu'il n'y a aucun gagnant, boucle de jeu puis affiche grille à l'écran
+        choix();
     }
     
     
