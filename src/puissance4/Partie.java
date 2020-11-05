@@ -40,8 +40,8 @@ public class Partie {
        ListeJoueurs[1].affecterCouleur(couleur2);
        ListeJoueurs[1].couleur=couleur2;
        
-       System.out.println(ListeJoueurs[0].nom + " est de couleur " + couleur1);
-       System.out.println(ListeJoueurs[1].nom + " est de couleur " + couleur2);
+       System.out.println(ListeJoueurs[0].nom + " a les jetons " + couleur1+"s");
+       System.out.println(ListeJoueurs[1].nom + " a les jetons " + couleur2+"s");
     }
     
     public void initialiserPartie() {
@@ -89,8 +89,15 @@ public class Partie {
             Random rand1 = new Random();
             nbAleatoire1 = rand1.nextInt(6);
             nbAleatoire2 = rand1.nextInt(7);
-            GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2); 
-            GrilleJeu.placerDesintegrateur(nbAleatoire1,nbAleatoire2); 
+            while (GrilleJeu.Cellules[nbAleatoire1][nbAleatoire2].presenceTrouNoir()==true) {
+                nbAleatoire1 = rand1.nextInt(6);
+                nbAleatoire2 = rand1.nextInt(7);
+            } 
+            if (GrilleJeu.Cellules[nbAleatoire1][nbAleatoire2].presenceTrouNoir()==false) {
+                GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2);
+                GrilleJeu.placerDesintegrateur(nbAleatoire1,nbAleatoire2); 
+            } 
+            
         }
         //On répète le même procédé pour les 3 trous noirs restants 
         for (int i = 0; i<3; i++) {
@@ -98,7 +105,13 @@ public class Partie {
             Random rand2 = new Random();
             nbAleatoire1 = rand2.nextInt(6);
             nbAleatoire2 = rand2.nextInt(7);
-            GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2);
+            while (GrilleJeu.Cellules[nbAleatoire1][nbAleatoire2].presenceTrouNoir()==true) {
+                nbAleatoire1 = rand2.nextInt(6);
+                nbAleatoire2 = rand2.nextInt(7);
+            } 
+            if (GrilleJeu.Cellules[nbAleatoire1][nbAleatoire2].presenceTrouNoir()==false) {
+                GrilleJeu.placerTrouNoir(nbAleatoire1,nbAleatoire2);
+            }
         }
         
         
@@ -107,8 +120,14 @@ public class Partie {
             int nbAleatoire1, nbAleatoire2;
             Random rand3 = new Random();
             nbAleatoire1 = rand3.nextInt(6);
-            nbAleatoire2 = rand3.nextInt(7);
-            GrilleJeu.placerDesintegrateur(nbAleatoire1,nbAleatoire2); 
+            nbAleatoire2 = rand3.nextInt(7);            
+            while (GrilleJeu.Cellules[nbAleatoire1][nbAleatoire2].presenceTrouNoir()==true) {
+                nbAleatoire1 = rand3.nextInt(6);
+                nbAleatoire2 = rand3.nextInt(7);
+            }   
+            if (GrilleJeu.Cellules[nbAleatoire1][nbAleatoire2].presenceTrouNoir()==false) {
+               GrilleJeu.placerDesintegrateur(nbAleatoire1,nbAleatoire2);
+           } 
         }
         
         //On affiche la grille initiale
@@ -281,9 +300,7 @@ public class Partie {
     public void debuterPartie() {
         initialiserPartie();
         while (GrilleJeu.etreGagnantePourJoueur(joueurCourant)==false) {
-            menu();
-            choix();
-            
+            choix();            
         }
         //Tant qu'il n'y a aucun gagnant, boucle de jeu puis affiche grille à l'écran
     }

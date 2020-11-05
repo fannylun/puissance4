@@ -98,7 +98,7 @@ public class Cellule {
         if(trouNoir==true) {
             jetonCourant=null;
             trouNoir=false;
-            System.out.print("Un trou noir a engloutit votre jeton");
+            System.out.println("Un trou noir a engloutit votre jeton");
             return true;
         }
         else {

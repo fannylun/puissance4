@@ -21,7 +21,7 @@ public class Grille {
     }
     
     public boolean colonneRemplie(int i) { //avec i l'indice de la colonne
-        if (Cellules[5][i]!=null){
+        if (Cellules[5][i].jetonCourant!=null){
             return true;
         }
         else {
@@ -36,7 +36,7 @@ public class Grille {
         }
         else {
             //On cherche la première cellule vide en partant du bas
-            while(Cellules[j][i]!=null) {
+            while(Cellules[j][i].jetonCourant!=null) {
                 j++;
             }
             //On ajoute ensuite un jeton dans la case concernée et on enlève un jeton dans la liste du joueur           
@@ -75,33 +75,35 @@ public class Grille {
     public void viderGrille() {
         for (int i=0; i<7; i++) {
             for (int j=0; j<6;j++) {
-                Cellules[j][i]=null;
+                Cellules[j][i].jetonCourant=null;
             }
         }
     }
-            
+    
     public void afficherGrilleSurConsole() {
         String [][]Cellules2 = new String[6][7];
-        for (int i=0; i<7; i++) {
-            for (int j=0; j<8; j++) {
+        for (int i=0; i<6; i++) {
+            for (int j=0; j<7; j++) {
                 if (Cellules[i][j].jetonCourant==null) {
-                    Cellules2[i][j]= "X"; //On affiche un X si la case est vide
-                }
-                else if (Cellules[i][j].presenceTrouNoir()== true) {
-                    Cellules2[i][j]= "T";
-                }
-                else if (Cellules[i][j].presenceDesintegrateur()== true) {
-                    Cellules2[i][j]= "D";
+                    if (Cellules[i][j].presenceTrouNoir()== true) {
+                        Cellules2[i][j]= "T ";
+                    }
+                    else if (Cellules[i][j].presenceDesintegrateur()== true) {
+                    Cellules2[i][j]= "D ";
+                    }
+                    else {
+                        Cellules2[i][j]= "X "; //On affiche un X si la case est vide
+                    }                    
                 }
                 else {
-                    if (Cellules[i][j].lireCouleurDuJeton() == "Rouge") {
-                        Cellules2[i][j]= "R";
+                    if (Cellules[i][j].lireCouleurDuJeton().equals("Rouge")) {
+                        Cellules2[i][j]= "R ";
                     }
-                    if (Cellules[i][j].lireCouleurDuJeton() == "Jaune") {
-                        Cellules2[i][j]= "J";
-                    }
-                    
-                }
+                    if (Cellules[i][j].lireCouleurDuJeton().equals("Jaune")) {
+                        Cellules2[i][j]= "J ";
+                    } 
+                }                        
+                
                 System.out.print(Cellules2[i][j]);
                
             }
