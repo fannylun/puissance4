@@ -261,7 +261,7 @@ public class Partie {
             res=true;
         }  
         else {
-            System.out.println("Erreur, case vide");
+            System.out.println("Erreur, cette case est vide ou ce jeton ne vous appartient pas");
             res=false;
         }
         GrilleJeu.afficherGrilleSurConsole(); 

@@ -193,6 +193,7 @@ public class Grille {
             } 
             for(int j=3; j<7;j++){
                 if (Cellules[i][j].lireCouleurDuJeton().equals(CouleurDuJoueur)){
+                    nb_alignés=1;
                     if (Cellules[i+1][j-1].lireCouleurDuJeton().equals(CouleurDuJoueur)){
                         nb_alignés=nb_alignés+1;
                     }
