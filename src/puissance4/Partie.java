@@ -310,8 +310,8 @@ public class Partie {
             
             joueurCourant=changementJoueur(joueurCourant);
             System.out.println("C'est au tour de " + joueurCourant.nom +" de jouer"); 
-        } while (rep<=3 && GrilleJeu.etreGagnantePourJoueur(joueurCourant)==false);
-         
+        } while (rep<=3 && GrilleJeu.etreGagnantePourJoueur(ListeJoueurs[0])==false && GrilleJeu.etreGagnantePourJoueur(ListeJoueurs[0])==false);
+        // BD : changement du test pour inclure les 2 gagnants  
         
     }
     
