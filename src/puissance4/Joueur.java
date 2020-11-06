@@ -31,8 +31,7 @@ public class Joueur {
     public void ajouterJeton (Jeton unJeton) {
         
         ListeJetons[nombreJetons++]=unJeton;
-    }
-    
+    }    
     
     public Jeton enleverJeton () {
         nombreJetons=nombreJetons-1;
