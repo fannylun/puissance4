@@ -18,8 +18,8 @@ public class Puissance4 {
      */
     public static void main(String[] args) {
         
-        Partie unePartie = new Partie();
-        unePartie.debuterPartie();
+        Partie unePartie = new Partie(); //Création de la partie
+        unePartie.debuterPartie(); //Lancement de la partie
         
                 
     }
